@@ -1,0 +1,8 @@
+# Place all the behaviors and hooks related to the matching controller here.
+# All this logic will automatically be available in application.js.
+# You can use CoffeeScript in this file: http://coffeescript.org/
+//= require desktop.min
+//= require head.min
+//= require jquery
+//= require jquery.zoom.min
+//= require jquery.zoom

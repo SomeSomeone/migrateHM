@@ -1,0 +1,175 @@
+
+ <% content_for :title do 'Моя адресная книга' end %>
+<style>
+	.select2{
+		max-width: 200px;
+	}
+</style>
+<main role="main" class="responsive my-hm">
+		<div class="wrapper">
+			<nav class="breadcrumbs">
+				<ul>
+					<li>
+						<a href="/">Yourhm.com.ua</a>
+					</li>
+
+					<li class="">
+						<a href="#">Ваша учетная запись</a>
+					</li>
+
+					<li class="active">
+						<a href="#" onclick="return false;">Адресная книга</a>
+					</li>
+				</ul>
+			</nav>
+			<script type="text/javascript">$("body").addClass("checkout-loader-layer");</script>
+			<nav class="section navigation menu " role="navigation">
+				<ul role="menu">
+					<li class="item" role="presentation" tabindex="0">
+						<a href="/my-overview" role="menuitem">Обзор</a>
+					</li>
+					<li class="item" role="presentation" tabindex="-1">
+						<a href="/my-profile" role="menuitem">Личные сведения</a>
+					</li>
+					<li class="item" role="presentation" tabindex="-1">
+						<a href="/my-order" role="menuitem">Заказы</a>
+					</li>
+					<li class="current item" role="presentation" tabindex="-1">
+						<a href="/my-address" role="menuitem">Адресная книга</a>
+					</li>
+				</ul>
+			</nav>
+			<% if @addresses%>
+			<div class="layout layout-eight ng-scope" id="profileDIV">
+				<div class="form-section agile-form disabled-form" id="profile">
+					<fieldset class="form-part">
+						<legend class="heading">Адресная книга</legend>
+						<%= semantic_form_for @addresses, :url => users_address_update_path(@addresses) do |f| %>
+						<div class="inputwrapper">
+							<label class="label" for="myhm-email">Адрес</label>
+							<div class="field">
+								<% if @addresses.city %>
+								<%= f.select(:city, [[@addresses.city , @addresses.city ]], {} ,{ :class => "chosen-select-city"}) %>
+								<% elsif %>
+								<%= f.select(:city, [['Ваш адрес' , '' ]], {} ,{ :class => "chosen-select-city"}) %>
+								<% end %>
+							</div>
+							<span class="static ng-binding"><%= @addresses.city%></span>
+							<div class="input-info ng-hide">Указывайте полный адрес(область, район, населенный пункт)</div>
+						</div>
+
+						<div class="inputwrapper required">
+							<label class="label" for="checkout.firstName">Отделение Новой почты</label>
+							<div class="field">
+								<% if @addresses.post_index %>
+								<%= f.select(:post_index, [[@addresses.post_index , @addresses.post_index ]], {} ,{ :class => "chosen-select-addrr"}) %>
+								<% elsif %>
+								<%= f.select(:post_index, [['Отделение Новой Почты' , '' ]], {} ,{ :class => "chosen-select-addrr"}) %>
+								<% end %>
+							</div>
+
+							<span class="static ng-binding"><%= @addresses.post_index%></span>
+							<div class="input-info ng-hide"></div>
+						</div>
+
+					</fieldset>
+					<div class="button-group buttons-of-gods">
+						<button type="button" class="secondary button redaction_data">Редактировать</button>
+						<%= f.submit value:'ИЗМЕНИТЬ', class: 'hidden change_button'%>
+						<div id="globalMessages"></div>
+					</div>
+					<% end %>
+				</div>
+			</div>
+			<% elsif %>
+			<!-- <div class="layout layout-eight ng-scope">
+				<div class="form-section agile-form">
+					<fieldset class="form-part">
+						<legend class="heading">Адресная книга</legend>
+						<%= semantic_form_for @address_new, :url => users_address_create_path(@address_new) do |f| %>
+						<div class="inputwrapper">
+							<label class="label" for="myhm-email">Адрес</label>
+							<%= f.text_field :city, class: 'text-input field' %>
+							<div class="input-info ng-hide">Указывайте полный адрес(область, район, населенный пункт)</div>
+						</div>
+						<div class="inputwrapper required">
+							<label class="label" for="checkout.firstName">Отделение Новой почты</label>
+							<%= f.text_field :post_index, class: 'text-input field' %>
+							<div class="input-info ng-hide"></div>
+						</div>
+					</fieldset>
+					<div class="button-group">
+						<%= f.submit value:'СОХРАНИТЬ', class: 'change_button'%>
+					</div>
+					<% end %>
+				</div>
+			</div> -->
+			<% end %>
+		</div>
+	</main>
+<!-- 	<select class="chosen-select" id="city" data-placeholder="Ваш адрес">
+    <option value="">адрес</option>
+  </select>
+  <select class="chosen-select-addrr" id="addrr" data-placeholder="Отделение Новой почты">
+    <option value="">Отделение Новой Почты</option>
+  </select> -->
+	<% content_for :javascript do %>
+	<script>
+		$(document).ready(function(){
+			$('.redaction_data').click(function(){
+				$('#profile').toggleClass('disabled-form');
+				$('.change_button').toggle();
+			});
+			// novapost_request
+    $('#address_city').select2();
+    $('#address_post_index').select2({
+      minimumResultsForSearch: Infinity
+    });
+      function selectAddrr(){
+        $('#address_post_index option').remove();
+          var c_ref = $('#address_city option').filter(':selected').attr('data-city-ref');
+          var nova_addrr = {
+            "modelName": "AddressGeneral",
+            "calledMethod": "getWarehouses",
+            "methodProperties": {
+                 "CityRef": c_ref
+            },
+            "apiKey": "993750c8658bf925309d3c781906709e"
+          }
+        nova_addrr = JSON.stringify(nova_addrr);
+        $.ajax('https://api.novaposhta.ua/v2.0/json/', {type: 'POST', data: nova_addrr,  success: function(addrrReq){
+          console.log(addrrReq);
+           $.each(addrrReq.data, function(index){
+            $('#address_post_index').append('<option>' + this['Description'] + '</option>');
+          })
+        }});
+      }
+      $("body").on('keyup', '.select2-search__field', function(){
+        $('.select2-container--default').addClass('mylass');
+        var letterVal = $(this).val();
+        var nova = {
+          "modelName": "Address",
+          "calledMethod": "searchSettlements",
+          "methodProperties": {
+              "CityName": $(this).val()
+          },
+          "apiKey": "993750c8658bf925309d3c781906709e"
+        }
+        nova = JSON.stringify(nova);
+        $.ajax('https://api.novaposhta.ua/v2.0/json/', {type: 'POST', data: nova,  success: function(req){
+          $('#address_city option').remove();
+          $.each(req.data[0].Addresses, function(index){
+            $('#address_city').append('<option data-city-ref="' + this['DeliveryCity'] + '">' + this['MainDescription'] + ' ' + this['Region'] + ' район ' + this['Area'] + ' область' + '</option>');
+          });
+          selectAddrr();
+         }
+       }
+        );
+      });
+      $('#address_city').on('change', function() {
+        selectAddrr();
+      });
+    // end
+		});
+	</script>
+	<% end %>

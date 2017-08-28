@@ -1,0 +1,40 @@
+<% cache product_datum do %>
+  <% if product_datum%>
+    <div class="grid col-3">
+      <article class="product-item club-price-item" style="position: relative;">
+        <%= link_to "/single/hm-#{product_datum.article}" , class: "product-item-link" do %>
+          <%if product_datum.photos and product_datum.photos!=[]%>
+          <img src="<%= product_datum.photos[-1].img.url(:medium) %>" alt="<%= product_datum.product.name %>" width="222" height="333" class="product-item-image" data-altimage="<%= (product_datum.photos[-2]||product_datum.photos[-1]).img.url(:medium) %>">
+          <%end%>
+        <%end%>
+        <button type="button" style="z-index: 2;" class="favorite icon icon-favorites" data-tracking-type="event" data-saved-text="СОХРАНЕНО КАК ИЗБРАННОЕ" data-not-saved-text="СОХРАНИТЬ КАК ИЗБРАННОЕ" data-id="<%= product_datum.id %>" data-article="<%= product_datum.article %>"">СОХРАНИТЬ КАК ИЗБРАННОЕ</button>
+
+        <div class="product-item-details">
+          <h3 class="product-item-heading">
+          <%= link_to "/single/hm-#{product_datum.article}" do %>
+            <%=product_datum.product.name%>
+          <% end %>
+          </h3>
+        <% if product_datum!=nil and product_datum.price!=nil %>
+          <%if product_datum.promotional_price?%>
+            <strong class="price sale-price"> <%=product_datum.get_promotional_price%> грн
+              <span class="price original-price"><%= product_datum.get_price%> грн</span>
+            </strong>
+          <%else%>
+          <strong class="price"><%= product_datum.get_price%> грн</strong>
+          <%end%>
+        <%else%>
+          <strong class="price">Уточняеться</strong>
+        <% end %>
+          <ul class="list-swatches">
+           <%product_datum.product.color.each do |c|  %>
+            <li class="item">
+              <%=image_tag(c.img(:original) ,class:"swatch")%>
+            </li>
+           <%end%>
+          </ul>
+        </div>
+      </article>
+    </div>
+  <%end%>
+<%end%>

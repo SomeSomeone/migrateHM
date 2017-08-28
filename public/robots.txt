@@ -1,0 +1,6 @@
+﻿User-agent: *
+Disallow: /favourites
+Disallow: /cart
+Disallow: /users/sign_in
+Sitemap: https://yourhm.com.ua/sitemap.xml
+Host: https://yourhm.com.ua

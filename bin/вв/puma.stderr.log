@@ -1,0 +1,7 @@
+=== puma startup: 2017-06-06 11:14:11 +0300 ===
+/home/hm/.rbenv/versions/2.4.1/lib/ruby/gems/2.4.0/gems/will_paginate-3.1.5/lib/will_paginate/view_helpers/link_renderer.rb:27: warning: constant ::Fixnum is deprecated
+/home/hm/.rbenv/versions/2.4.1/lib/ruby/gems/2.4.0/gems/will_paginate-3.1.5/lib/will_paginate/view_helpers/link_renderer.rb:91: warning: constant ::Fixnum is deprecated
+/home/hm/.rbenv/versions/2.4.1/lib/ruby/gems/2.4.0/gems/will_paginate-3.1.5/lib/will_paginate/view_helpers/link_renderer.rb:27: warning: constant ::Fixnum is deprecated
+/home/hm/.rbenv/versions/2.4.1/lib/ruby/gems/2.4.0/gems/will_paginate-3.1.5/lib/will_paginate/view_helpers/link_renderer.rb:91: warning: constant ::Fixnum is deprecated
+/home/hm/.rbenv/versions/2.4.1/lib/ruby/gems/2.4.0/gems/will_paginate-3.1.5/lib/will_paginate/view_helpers/link_renderer.rb:27: warning: constant ::Fixnum is deprecated
+/home/hm/.rbenv/versions/2.4.1/lib/ruby/gems/2.4.0/gems/will_paginate-3.1.5/lib/will_paginate/view_helpers/link_renderer.rb:91: warning: constant ::Fixnum is deprecated

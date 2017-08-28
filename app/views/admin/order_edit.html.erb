@@ -1,0 +1,253 @@
+<div class="row">
+    <div class="col-lg-5">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>Изменение заказа</h5>
+                <div class="ibox-tools">
+                    <a class="collapse-link">
+                        <i class="fa fa-chevron-up"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="ibox-content">
+                <%= semantic_form_for @order, :url => admin_order_update_path(@order) , :html => { :class => "form-horizontal" , multipart: true } do |f| %>
+                    <div class="form-group">
+                    <%= f.label :status , "Статус" , class: "col-lg-2 control-label"%>
+                        <div class="col-lg-10">
+                          <%= f.select(:status, [["Ожидает платежа","Ожидает платежа"],["Принят","Принят"],["Выкуплен","Выкуплен"],["Выкуплен частично","Выкуплен частично"],["Следует в Украину","Следует в Украину"],["Прибыл в Украину", "Прибыл в Украину"],["Отправлено Новой Почтой" , "Отправлено Новой Почтой"],["Отменен" , "Отменен"]] , {} ,{ :class => "form-control m-b"}) %>
+                          <span class="help-block m-b-none">Выберите cтатус</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                    <%= f.label  :cash_back , "Сумму возврата" , class: "col-lg-2 control-label"%>
+                        <div class="col-lg-10"><%= f.text_field :cash_back, class: 'form-control' %><span class="help-block m-b-none">Введите сумму возврата</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                    <%= f.label  :about , "Комментарий" , class: "col-lg-2 control-label"%>
+                        <div class="col-lg-10"><%= f.text_field :about, class: 'form-control' %>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-lg-offset-2 col-lg-10">
+                          <%= f.submit  "Изменить заказ" , :class => "btn btn-sm btn-primary" %>
+                        </div>
+                    </div>
+                <% end %>
+            </div>
+        </div>
+    </div>
+</div>
+<a data-toggle="modal" class="btn btn-primary" href="#modal-form">Сформировать накладную</a>
+<div id="modal-form" class="modal fade" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-12 b-r"><h3 class="m-t-none m-b">Сформировать накладную</h3>
+                        <!-- <form role="form"> -->
+                            <div class="form-group"><label>Вес(кг)</label> <input type="text" id="order_weight" class="form-control" value="1"></div>
+                            <div class="form-group"><label>Объем(м3)</label> <input type="text" id="order_volume" class="form-control" value="0.0004"></div>
+                            <div class="form-group"><label>Мест</label> <input type="text" id="order_sets" class="form-control" value="1"></div>
+                            <div class="form-group"><label>Описание</label> <input type="text" id="order_desc" class="form-control" value="Одежда"></div>
+                            <input type="submit" id="submit_ttn" value="Сформировать">
+                        <!-- </form> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- <a data-toggle="modal" class="btn btn-primary" href="#modal-form_ttn">Отчет</a> -->
+<div id="modal-form_ttn" class="modal fade" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-12 b-r"><h3 class="m-t-none m-b">Накладная сформирована</h3>
+                        <!-- <form role="form"> -->
+                            <div class="form-group" id="end_ttn">
+                              
+                            </div>
+                            <input type="hidden" id="ttn_to_send" value="">  
+                            <input type="submit" id="send_sms" value="Уведомить получателя при помощи смс">
+                            <button id="all_close">Закрыть</button>
+                        <!-- </form> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="post_without_html" style="display:none;"><%= @order.address_post_index %></div>
+<% content_for :javascript do %>
+<script>
+  $(document).ready(function(){
+    var s = $('#post_without_html').text();
+    b = s.split(' ');
+    var privat = true;
+    if(b[0]=="Поштомат"){
+      privat = false;
+      $('#post_without_html').text(b[0] + " " + '\\"ПриватБанк\\"' + " " + b[2]);
+    }
+    else{
+      privat = true;
+      $('#post_without_html').text(b[0] + " " + b[1]);
+    }
+    var myPayerType = '';
+    if(<%= @order.sum %> < 1000){
+      myPayerType = 'Recipient';
+    }
+    else{
+      myPayerType = 'Sender';
+    }
+    var address = {
+      "modelName": "Address",
+      "calledMethod": "searchSettlements",
+      "methodProperties": {
+          "CityName": <% a=@order.address_city.split;
+                          a.each_with_index{|d,k| if d=="район";a.delete_at(k-1); a.delete_at(k-1);puts k; end } %>
+                        "<%=a.join(" ") %>"
+      },
+      "apiKey": "bfc8c0aedbd68302df7f2617fb4587e4"
+    }
+    address = JSON.stringify(address);
+    $.ajax('https://api.novaposhta.ua/v2.0/json/', {type: 'POST', data: address,  success: function(req){
+      console.log('address');
+      console.log(req);
+      var CityRef = req.data[0].Addresses[0].DeliveryCity;
+      var conragent = {
+        "modelName": "Counterparty",
+        "calledMethod": "save",
+        "methodProperties": {
+            "CityRef": CityRef,
+            "FirstName": "<%= @order.user.first_name %>",
+            "LastName": "<%= @order.user.second_name %>",
+            "Phone": "<%= @order.user.tel.gsub(/[ ()-]/,"") %>",
+            "Email": "<%= @order.user.email %>",
+            "CounterpartyType": "PrivatePerson",
+            "CounterpartyProperty": "Recipient"
+        },
+        "apiKey": "bfc8c0aedbd68302df7f2617fb4587e4"
+      }
+      console.log(conragent)
+      conragent = JSON.stringify(conragent);
+      $.ajax('https://api.novaposhta.ua/v2.0/json/', {type: 'POST', data: conragent,  success: function(contr){
+          console.log('contragent')
+          console.log(contr);
+          var contactRecipient = contr.data[0].ContactPerson.data[0].Ref;
+          var refRecipirnt = contr.data[0].Ref;
+          var post_html = $('#post_without_html').text();
+          var postAddrr = {
+            "modelName": "Address",
+            "calledMethod": "getWarehouses",
+            "methodProperties": {
+                "CityRef": CityRef,
+                "FindByString": post_html
+            },
+            "apiKey": "bfc8c0aedbd68302df7f2617fb4587e4"
+          }
+          postAddrr = JSON.stringify(postAddrr);
+          $.ajax('https://api.novaposhta.ua/v2.0/json/', {type: 'POST', data: postAddrr, success: function(postRes){
+            console.log('postAddrr');
+            console.log(postRes);
+            console.log(postRes.data[0].Ref);
+            $('#submit_ttn').click(function(){
+            if(privat){
+              var save = {
+                "modelName": "InternetDocument",
+                "calledMethod": "save",
+                "methodProperties": {
+                "PayerType": myPayerType,
+                "PaymentMethod": "Cash",
+                "DateTime": "<%= Time.now.strftime("%d.%m.%Y")%>",
+                "CargoType": "Cargo",
+                "VolumeGeneral": '0.001',
+                "Weight": $('#order_volume').val(),
+                "ServiceType": "WarehouseDoors",
+                "SeatsAmount": $('#order_sets').val(),
+                "Description": $('#order_desc').val(),
+                "Cost": "<%= @order.sum %>",
+                "CitySender": "db5c88d0-391c-11dd-90d9-001a92567626",
+                "Sender": "208a9c69-9139-11e6-a54a-005056801333",
+                "SenderAddress": "366a9f2f-cc82-11e4-a77a-005056887b8d",
+                "ContactSender": "b00a1b13-cb21-11e5-8478-005056887b8d",
+                "SendersPhone": "380630730248",
+                "CityRecipient": CityRef,
+                "Recipient": refRecipirnt,
+                "RecipientAddress": postRes.data[0].Ref, 
+                "ContactRecipient": contactRecipient,
+                "RecipientsPhone": "<%= @order.user.tel.gsub(/[ ()-]/,"") %>"
+                },
+                "apiKey": "bfc8c0aedbd68302df7f2617fb4587e4"
+              }
+            }
+            else{
+              var save = {
+                "modelName": "InternetDocument",
+                "calledMethod": "save",
+                "methodProperties": {
+                "PayerType": myPayerType,
+                "PaymentMethod": "Cash",
+                "DateTime": "<%= Time.now.strftime("%d.%m.%Y")%>",
+                "CargoType": "Cargo",
+                "OptionsSeat": [
+                  {
+                    "volumetricVolume": "1",
+                    "volumetricWidth": "30",
+                    "volumetricLength": "30",
+                    "volumetricHeight": "30",
+                    "weight": $('#order_volume').val()
+                  }
+                ],
+                "ServiceType": "WarehouseWarehouse",
+                "SeatsAmount": $('#order_sets').val(),
+                "Description": $('#order_desc').val(),
+                "Cost": "<%= @order.sum %>",
+                "CitySender": "db5c88d0-391c-11dd-90d9-001a92567626",
+                "Sender": "208a9c69-9139-11e6-a54a-005056801333",
+                "SenderAddress": "366a9f2f-cc82-11e4-a77a-005056887b8d",
+                "ContactSender": "b00a1b13-cb21-11e5-8478-005056887b8d",
+                "SendersPhone": "380630730248",
+                "CityRecipient": CityRef,
+                "Recipient": refRecipirnt,
+                "RecipientAddress": postRes.data[0].Ref,
+                "ContactRecipient": contactRecipient,
+                "RecipientsPhone": "<%= @order.user.tel.gsub(/[ ()-]/,"") %>"
+                },
+                "apiKey": "bfc8c0aedbd68302df7f2617fb4587e4"
+              }
+            }
+            save = JSON.stringify(save);
+            console.log(save);
+            $.ajax('https://api.novaposhta.ua/v2.0/json/', {type: 'POST', data: save,  success: function(ttn){
+                console.log('ttn');
+                console.log(ttn);
+                console.log(ttn.data[0].IntDocNumber);
+                $('#modal-form_ttn').addClass('in').show();
+                $('#modal-form, .modal-backdrop').removeClass('in').hide();
+                var sms = 'Накладная сформирована и направлена в личный кабинет НП. Номер ТТН - ' + ttn.data[0].IntDocNumber + '';
+                var myttn = ttn.data[0].IntDocNumber;
+                $('#ttn_to_send').val(myttn);
+                $('#end_ttn').text(sms)
+            }});
+            $('#send_sms').click(function(){
+              var myttn = $('#ttn_to_send').val();
+              $.ajax(encodeURI('https://app.bsg.hk/sendsms?user=inbrogues1@gmai&pwd=bqfD2k6b&sadr=Your HM&dadr=<%= @order.user.tel.gsub(/[ ()-]/,"") %>&text=Ваш заказ на сайте yourhm.com.ua отправлен. Номер ТТН ' + myttn + ''), {type: 'GET', success: function(smssend){
+                console.log(smssend);
+              }, error: function(er){
+                console.log(er);
+              }})
+              alert('Смс отправлено!');
+            });
+          });
+        }});
+      }});
+    }});
+    $('#send_sms, #all_close').click(function(){
+      $('#modal-form_ttn').removeClass('in').hide();
+    });
+  });
+</script>
+<% end %>

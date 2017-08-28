@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="ru" class="js history rgba no-touchevents lastchild nthchild backgroundsize borderradius flexbox flexboxlegacy csstransforms csstransitions grunticon ng-scope" ng-app="hmApp" style="">
+<head>
+<%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+ <!-- Include style per-controller - vendor plugins -->
+<%= stylesheet_link_tag get_controller if (Rails.application.assets || ::Sprockets::Railtie.build_environment(Rails.application)).find_asset("#{get_controller}.css") %>
+
+  <!--[if lt IE 9]>
+  <link rel="stylesheet" href="/etc/designs/hm/clientlibs/desktop/ie8.min.css" type="text/css">
+  <![endif]-->
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+  <meta name="google-site-verification" content="ka0SKKGGiv0ryi5XhpTNLSi5Bszj5y9R0NxEgw-T4ys" />
+  <meta name="yandex-verification" content="6dfd1ecfd706738e" />
+  
+  <link rel="apple-touch-icon" sizes="180x180" href="/fav/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/fav/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/fav/favicon-16x16.png">
+  <link rel="manifest" href="/fav/manifest.json">
+  <link rel="mask-icon" href="/fav/safari-pinned-tab.svg" color="#ff0000">
+  <% if yield :canonical %>   
+    <link rel="canonical" href="<%= yield :canonical %>"/>
+  <%end%>
+  <meta name="theme-color" content="#ffffff">
+  <meta name="google-site-verification" content="lX_mZzUMUpUwhvgKlDMjuum18P8wOHWn4dDeGqpmKOQ" />
+  <meta name="keywords">
+  <meta property="og:site_name" content="H+M">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://yourhm.com.ua">
+  
+
+  
+  
+
+  <meta property="og:description" content="<%= yield :description %>">
+  <meta name="description" content="<%= yield :description %>">
+  <title><%= yield :title %></title>
+  <meta property="og:title" content="<%= yield :title %>">
+  <%= csrf_meta_tags %>
+</head>
+<body>
+<div class="mini-menu"><svg xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://web.resource.org/cc/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" id="svg1938" sodipodi:version="0.32" inkscape:version="0.44" width="23" height="19" version="1.0" sodipodi:docbase="C:\Documents and Settings\belette\Bureau" sodipodi:docname="☰.svg">
+<metadata xmlns="http://www.w3.org/2000/svg" id="metadata1943">
+    <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+      <cc:Work xmlns:cc="http://web.resource.org/cc/" rdf:about="">
+        <dc:format xmlns:dc="http://purl.org/dc/elements/1.1/">image/svg+xml</dc:format>
+        <dc:type xmlns:dc="http://purl.org/dc/elements/1.1/" rdf:resource="http://purl.org/dc/dcmitype/StillImage"></dc:type>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs xmlns="http://www.w3.org/2000/svg" id="defs1941"></defs>
+  <sodipodi:namedview xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" inkscape:window-height="964" inkscape:window-width="1280" inkscape:pageshadow="2" inkscape:pageopacity="0.0" guidetolerance="10.0" gridtolerance="10.0" objecttolerance="10.0" borderopacity="1.0" bordercolor="#666666" pagecolor="#ffffff" id="base" inkscape:zoom="19.736842" inkscape:cx="11.5" inkscape:cy="9.5" inkscape:window-x="-4" inkscape:window-y="-4" inkscape:current-layer="svg1938"></sodipodi:namedview>
+  <rect xmlns="http://www.w3.org/2000/svg" style=";fill-rule:evenodd;stroke:none;stroke-width:0;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;fill-opacity:1" id="rect1947" width="21" height="3" x="1" y="14"></rect>
+  <rect xmlns="http://www.w3.org/2000/svg" style=";fill-rule:evenodd;stroke:none;stroke-width:0;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;fill-opacity:1;opacity:1" id="rect2836" width="21" height="3" x="1" y="2"></rect>
+  <rect xmlns="http://www.w3.org/2000/svg" style=";fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" id="rect9063" width="21" height="3" x="1" y="8"/>
+ </rect></svg></div>
+ 
+  <!-- Code to manage the mobile preview after css changes by HTML team -->
+  <header class="header-global">
+    <!-- Header -->
+    <!--AEMPUBPRDEU29-->
+    <div class="warehousemessage"></div>
+    <div class="wrapper">
+      <a href="/" class="logotype hidden-text">
+        <svg xmlns="http://www.w3.org/2000/svg" id="Layer_1" data-name="Layer 1" viewBox="0 0 488.57 267.77"><defs><style>.cls-1{fill:#f02;}</style></defs><title>hm</title><path class="cls-1" d="M740.83,542.83s33.33-2.17,41.33,17c0,0-34.5,111.17-30.5,97.17,0,0,18-1.33,18-.17,0,0,2,.79-4.12,4.92s-2.67.5-9.37,6.08l-.54,1.13-.25,3.25s-1,3.46-2.67,4.33-3.17,2.54-8.58,3.75L717.67,761.5s-1.17,8.83-6.67,10.17-43.33-4-42.5-13c0,0,12-43.67,20.67-68.17l-58,7s-22.5,72.5-30.67,74.67c0,0-15.83,1-18.17.67,0,0-2.71,1.54-2-7.46l24.13-67.12s-42,.88-50.87-5.87c0,0-.88-.18.47-1.87,0,0,4.81-2.31,5.09-4.94s-2.53-3.41-2.53-3.41l56.51-8,45.08-122.42s2.06-3.75,4.5-4.19,12.69-.69,15.31,2.31,1.75,13.06,1.06,13.75S641,670.5,641,670.5l57.5-7.25Z" transform="translate(-553.34 -524.69)"/><path class="cls-1" d="M779.38,706.5s-5.37,19.13-6,19.38-1.25,3.38-2.5,3.25-9.25.75-13.25-1.62a5,5,0,0,1-2.25-4.75l5.25-15.87s-11.69.44-19.19-4.31c0,0,.19-2.27,20.69-1.63h.13l5.81-19.16s1.44-4.16,3.38-5.28,13.38,3.34,14.28,6.38-4.72,17.44-4.25,17.5,5.25,0,5.25,0,11.47,3.06,11.78,4.81-18,.69-18.94,1Z" transform="translate(-553.34 -524.69)"/><path class="cls-1" d="M771.33,462.17" transform="translate(-553.34 -524.69)"/><path class="cls-1" d="M787.75,780.83s7.58,14.08,10.67,11.25,15.92-26.42,15.92-26.42L836,726.5l42-80.17L863.17,724.5l-7.5,43.67s.67,1.83,1.67,2.17-2.5,2.83,23.33,7.33c0,0,18.17.67,20.17-1s2.83-.5,5-5.67,77.42-146.25,76.42-146.25S958.5,780.5,958.5,780.5s1.13,6.81,8,8.63,17.13,1.44,25.25.19c0,0,4.44-2.06,4.69-6.37l9.19-46.5,15.25-78.56,16.88-89.12,3.63-21.25.33-3.92.21-8.46-.17-8.69s-1.12-2.87-14.44-1.25-29,4.69-29,4.69-1.94.06-5.87,8.69L925,665.75l19.33-111.08,1-16s-2.67-10.5-43.83-1.17c0,0-4.12.06-6.62,7.63L868,598.63l-37.75,81.13-41.92,93.08S787.44,778.54,787.75,780.83Z" transform="translate(-553.34 -524.69)"/><path class="cls-2" d="M878.33,863.67" transform="translate(-553.34 -524.69)"/></svg>
+      </a>
+      <div class="parbase topnav">
+        <nav class="primary-menu">
+          <!-- Primary menu -->
+          <ul>
+            <%@mainCat.each do |cat|%>
+              <li>                
+                <a href="/products/<%=cat.url%>"
+                  <% if cat.name.downcase == "sale" %>
+                    class="primary-menu-sale"
+                  <% end %>
+                ><%=cat.name%></a>
+              </li>
+            <% end %>
+          </ul>
+        </nav>
+        <!-- /Primary Menu -->
+      </div>
+
+      <nav class="services-menu">
+        <!-- Services menu -->
+
+        <div class="linklist parbase linklist1">
+
+          <ul class="list">
+
+            <li class="item" style="vertical-align: top;">
+              <a class="link" href="tel:0800211528" style="font-size: 20px;line-height: 1;">0 800 211 528</a><br>
+              <span style="font-size:10px; display: inline-block; line-height:9px;">Бесплатно со всех мобильных<br>и стационарных телефонов<br>на территории Украины</span>
+            </li>
+            <%if @user%>
+              <% if @user.money != 0 %>
+                <li class="item" style="vertical-align: top;">
+                  <a class="link" href="javascript:void(0)">Баланс: <%=@user.money%></a>
+                </li>
+              <% end %>
+            <% end %>
+           <!--  <li class="item">
+              <a class="link" href="#">Новостная рассылка</a>
+            </li> -->
+
+          </ul>
+          
+        </div>
+
+      </nav>
+      <!-- /Services menu -->
+      <nav class="session-menu">
+        <!-- Session menu -->
+
+        <div class="session-menu-top-row">
+          <a href="/favourites" class="js-favorite-entry-point favorite-entry-point is-favorite icon-favorites-dark icon">Избранное</a>
+          <span class="parbase minicart">
+            <div class="shopping-bag rollover-popdown is-loaded" data-cart="/pl_pl/minicart/view">
+              <a href="/cart" class="goto-shopping-bag rollover-toggle">
+                Корзина (<span class="shoppingbag-item-counts">0</span>)
+              </a>
+              <div class="shopping-bag-rollover row popdown"></div>
+            </div>
+          </span>
+        </div>
+        <div class="signin rollover-popdown">
+          <div class="parbase account">
+            <div class="signin rollover-popdown">
+            <% if user_signed_in? %>
+              <div class="signin-signed-in" style="display:block">
+                <a class="goto-my-hm" href="/my-overview" rel="noreferrer">Мой Кабинет</a>
+                <a class="goto-sign-in" href="/users/sign_out">Выйти</a>
+              </div>
+              <%else%>
+              <div class="signin-not-signed-in" style="display:block">
+                <a href="/my-overview" class="goto-sign-in rollover-toggle">Зарегистрироваться / Войти</a>
+              </div>
+            <% end %>
+            </div>
+          </div>
+        </div>
+
+      </nav>
+      <!-- /Session menu -->
+      <div class="autosuggestsearch parbase">
+        <div id="search-field" class="ui-widget">
+
+          <form method="get" action="/search" class="ng-pristine ng-valid">
+            <span role="status" aria-live="polite" class="ui-helper-hidden-accessible"></span>
+            <input id="main-search" type="text" data-test="false"  name="search" placeholder="Поиск" maxlength="20" class="ui-autocomplete-input" required>
+            <button class="magnify"></button>
+            </form>
+          <ul class="ui-autocomplete ui-front ui-menu ui-widget ui-widget-content" id="ui-id-1" tabindex="0" style="display: none;"></ul>
+        </div>
+
+      </div>
+
+      
+
+    </div>
+  </header>
+  <!-- /Header -->
+  <!-- HeaderLife -->
+
+
+
+
+
+<%= yield %>
+
+
+
+ <footer class="footer-global responsive">
+
+    <div class="layout">
+      <div class="four modules footer-menu footer-content">
+        <nav class="footer-category">
+          <h4 class="footer-heading js-toggle-trigger">КУПИТЬ</h4>
+          <ul class="list">
+            <%@mainCat.each do |cat|%>
+              <li class="item">
+                <a class="link" href="/products/<%=cat.url%>"><%=cat.name%></a>
+              </li>
+            <% end %>
+          </ul>
+        </nav>
+        <% @footer_sections.each do |footer_section|%>
+          <nav class="footer-category">
+            <%=(footer_section.text||"").html_safe %>
+          </nav>
+        <%end%>
+      </div>
+
+      <ul class="footer-social footer-content">
+
+        <li class="item">
+          <a href="https://www.facebook.com/yourhm.com.ua/" target="_blank" title="Facebook" class="hidden-text icon icon-social-facebook-white" rel="nofollow">Facebook</a>
+        </li>
+
+        <li class="item">
+          <a href="#" target="_blank" title="Twitter" class="hidden-text icon icon-social-twitter-white" rel="nofollow">Twitter</a>
+        </li>
+
+        <li class="item">
+          <a href="#" target="_blank" title="Instagram" class="hidden-text icon icon-social-instagram-white" rel="nofollow">Instagram</a>
+        </li>
+
+        <li class="item">
+          <a href="#" title="Youtube" target="_blank" class="hidden-text icon icon-social-youtube-white" rel="nofollow">Youtube</a>
+        </li>
+
+        <li class="item">
+          <a href="#" title="Google +" target="_blank" class="hidden-text icon icon-social-googleplus-white" rel="nofollow">Google +</a>
+        </li>
+
+        <li class="item">
+          <a href="#" target="_blank" title="Pinterest" class="hidden-text icon icon-social-pinterest-white" rel="nofollow">Pinterest</a>
+        </li>
+
+      </ul>
+
+
+      <a href="/" class="footer-logotype icon icon-hm-white hidden-text">
+        <svg xmlns="http://www.w3.org/2000/svg" id="Layer_2" data-name="Layer 2" viewBox="0 0 488.57 267.77"><defs><style>.cls-2{fill:#fff;}</style></defs><title>hm</title><path class="cls-2" d="M740.83,542.83s33.33-2.17,41.33,17c0,0-34.5,111.17-30.5,97.17,0,0,18-1.33,18-.17,0,0,2,.79-4.12,4.92s-2.67.5-9.37,6.08l-.54,1.13-.25,3.25s-1,3.46-2.67,4.33-3.17,2.54-8.58,3.75L717.67,761.5s-1.17,8.83-6.67,10.17-43.33-4-42.5-13c0,0,12-43.67,20.67-68.17l-58,7s-22.5,72.5-30.67,74.67c0,0-15.83,1-18.17.67,0,0-2.71,1.54-2-7.46l24.13-67.12s-42,.88-50.87-5.87c0,0-.88-.18.47-1.87,0,0,4.81-2.31,5.09-4.94s-2.53-3.41-2.53-3.41l56.51-8,45.08-122.42s2.06-3.75,4.5-4.19,12.69-.69,15.31,2.31,1.75,13.06,1.06,13.75S641,670.5,641,670.5l57.5-7.25Z" transform="translate(-553.34 -524.69)"/><path class="cls-2" d="M779.38,706.5s-5.37,19.13-6,19.38-1.25,3.38-2.5,3.25-9.25.75-13.25-1.62a5,5,0,0,1-2.25-4.75l5.25-15.87s-11.69.44-19.19-4.31c0,0,.19-2.27,20.69-1.63h.13l5.81-19.16s1.44-4.16,3.38-5.28,13.38,3.34,14.28,6.38-4.72,17.44-4.25,17.5,5.25,0,5.25,0,11.47,3.06,11.78,4.81-18,.69-18.94,1Z" transform="translate(-553.34 -524.69)"/><path class="cls-1" d="M771.33,462.17" transform="translate(-553.34 -524.69)"/><path class="cls-2" d="M787.75,780.83s7.58,14.08,10.67,11.25,15.92-26.42,15.92-26.42L836,726.5l42-80.17L863.17,724.5l-7.5,43.67s.67,1.83,1.67,2.17-2.5,2.83,23.33,7.33c0,0,18.17.67,20.17-1s2.83-.5,5-5.67,77.42-146.25,76.42-146.25S958.5,780.5,958.5,780.5s1.13,6.81,8,8.63,17.13,1.44,25.25.19c0,0,4.44-2.06,4.69-6.37l9.19-46.5,15.25-78.56,16.88-89.12,3.63-21.25.33-3.92.21-8.46-.17-8.69s-1.12-2.87-14.44-1.25-29,4.69-29,4.69-1.94.06-5.87,8.69L925,665.75l19.33-111.08,1-16s-2.67-10.5-43.83-1.17c0,0-4.12.06-6.62,7.63L868,598.63l-37.75,81.13-41.92,93.08S787.44,778.54,787.75,780.83Z" transform="translate(-553.34 -524.69)"/><path class="cls-2" d="M878.33,863.67" transform="translate(-553.34 -524.69)"/></svg>
+      </a>
+    </div>
+
+  </footer>
+  <!-- stop exit -->
+  <div class="overl"></div>
+  <div class="stop_exit_popup" style="display:none;">
+    <a href="/users/sign_up"><img src="/fav/stop_banner.png" alt=""></a>
+    <span></span>
+  </div>
+  <style>
+    .overl{
+      width: 100%;
+      min-height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      overflow: hidden;
+      position: fixed;
+      top: 0px;
+      z-index: 10;
+      display: none;
+    }
+    .stop_exit_popup{
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      -webkit-transform: translateX(-50%) translateY(-50%);
+      -ms-transform: translateX(-50%) translateY(-50%);
+      -o-transform: translateX(-50%) translateY(-50%);
+      transform: translateX(-50%) translateY(-50%);
+      z-index: 100;
+      max-width: 100%;
+      min-width: 300px;
+    }
+    .stop_exit_popup a ,.stop_exit_popup img{
+      max-width: 100%;
+    }
+    .stop_exit_popup span{
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 30px;
+      height: 30px;
+      z-index: 9999;
+      background: #000;
+      color: #fff;
+      cursor: pointer;
+    }
+    .stop_exit_popup span:before{
+      position: absolute;
+      content: '';
+      width: 20px;
+      height: 3px;
+      -moz-transform: rotate(45deg);
+      -ms-transform: rotate(45deg);
+      -webkit-transform: rotate(45deg);
+      -o-transform: rotate(45deg);
+      transform: rotate(45deg);
+      background: #fff;
+      top: 13px;
+      left: 5px
+    }
+    .stop_exit_popup span:after{
+      position: absolute;
+      content: '';
+      width: 20px;
+      height: 3px;
+      -moz-transform: rotate(-45deg);
+      -ms-transform: rotate(-45deg);
+      -webkit-transform: rotate(-45deg);
+      -o-transform: rotate(-45deg);
+      transform: rotate(-45deg);
+      background: #fff;
+      top: 13px;
+      left: 5px
+    }
+    #search-field button.magnify{
+      position: absolute;
+    }
+    #main-search[value=""] + button{
+      display: none;
+    }
+  </style>
+  <!-- stop exit -->
+<%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+
+    <!-- Include javascript per-view -->
+    <!-- For demo purpose we include javascript in view but you can easily start SeedProject and organize it with Rails asset pipeline as you want -->
+    <%= yield :javascript %>
+    <script>
+      $(document).ready(function(){
+        $(".mini-menu").click(function(){
+          $(".primary-menu").toggleClass("active");
+          $(".mini-menu").toggleClass("active");
+          $(".ladies-side-bar-label").toggleClass("delete");
+        })
+      })
+      // stop_exit
+      $(document).mouseleave(function(e){
+        if (e.clientY < 0 && !localStorage.getItem('stop')) {
+          console.log('stop');
+          localStorage.setItem('stop', 'true');
+          $('.stop_exit_popup, .overl').show();
+        }
+      });
+
+      setTimeout(function () {
+        if (!localStorage.getItem('stop')) {
+        localStorage.setItem('stop', 'true');
+        $('.stop_exit_popup, .overl').show();
+        }
+      },20000)
+
+
+
+      $('.stop_exit_popup span').click(function(){
+        $('.stop_exit_popup, .overl').hide();
+      })
+      $('.stop_exit_popup a').click(function(){
+        ga('send', 'event', 'StopExit', 'click', 'Нажали зарегистрироваться');
+      })
+      // stop_exit
+      cartCount();
+      function cartCount(){
+          var cCount = JSON.parse(localStorage.getItem('myCart')).length;
+          // cCount = cCount + c_n_t;
+          $('.shoppingbag-item-counts').text(cCount);
+          console.log('sdds');
+        }
+    </script>
+
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-99995044-1', 'auto');
+      ga('send', 'pageview');
+    </script>
+
+    <!-- Yandex.Metrika counter --> 
+    <script type="text/javascript" > (function (d, w, c) { (w[c] = w[c] || []).push(function() { try { w.yaCounter44784385 = new Ya.Metrika({ id:44784385, clickmap:true, trackLinks:true, accurateTrackBounce:true, webvisor:true }); } catch(e) { } }); var n = d.getElementsByTagName("script")[0], s = d.createElement("script"), f = function () { n.parentNode.insertBefore(s, n); }; s.type = "text/javascript"; s.async = true; s.src = "https://d31j93rd8oukbv.cloudfront.net/metrika/watch_ua.js"; if (w.opera == "[object Opera]") { d.addEventListener("DOMContentLoaded", f, false); } else { f(); } })(document, window, "yandex_metrika_callbacks"); </script> <noscript><div><img src="https://mc.yandex.ru/watch/44784385" style="position:absolute; left:-9999px;" alt="" /></div></noscript> 
+    <!-- /Yandex.Metrika counter -->
+
+    <!-- BEGIN JIVOSITE CODE {literal} -->
+    <script type='text/javascript'>
+    (function(){ var widget_id = 'cg0C57rAJA';var d=document;var w=window;function l(){
+    var s = document.createElement('script'); s.type = 'text/javascript'; s.async = true; s.src = '//code.jivosite.com/script/widget/'+widget_id; var ss = document.getElementsByTagName('script')[0]; ss.parentNode.insertBefore(s, ss);}if(d.readyState=='complete'){l();}else{if(w.attachEvent){w.attachEvent('onload',l);}else{w.addEventListener('load',l,false);}}})();</script>
+    <!-- {/literal} END JIVOSITE CODE -->
+
+
+
+
+
+</body>
+</html>

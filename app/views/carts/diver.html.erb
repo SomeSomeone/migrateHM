@@ -1,0 +1,436 @@
+
+  <% content_for :title do 'Оформление заказа' end %>
+  <main role="main" class="">
+    <div class="wrapper">
+      <nav class="breadcrumbs">
+        <ul>
+          <li>
+            <a href="/">YourHM.COM</a>
+          </li>
+
+          <li class="">
+            <a href="#" onclick="return false;">ОФОРМЛЕНИЕ ЗАКАЗА</a>
+          </li>
+          <li class="active">
+            <a href="#" onclick="return false;">ОФОРМЛЕНИЕ ЗАКАЗА</a>
+          </li>
+        </ul>
+      </nav>
+      <header class="checkout-header">
+        <h1>ОФОРМЛЕНИЕ ЗАКАЗА</h1>
+        <ul class="checkout-breadcrumbs items-3 clearfix">
+          <li class="item">1. ВОЙТИ</li>
+          <li class="item item-current">2. ДОСТАВКА И ОПЛАТА</li>
+          <li class="item item-last">3. СПАСИБО</li>
+        </ul>
+      </header>
+    <div class="input-fields-info has-border">
+      Пожалуйста, заполните данные кириллицей и в соответствии с паспортом
+    </div>
+    <%= semantic_form_for @order, :url => carts_order_create_path(@order) do |f| %>
+    <div class="layout ng-scope">
+      <div class="row">
+        <div class="grid col-8 diver-width-100">
+          <section class="box checkout-section responsive checkout-address-section">
+            <header class="box-headline checkout-address-section-header">
+              <h1 class="heading">Мои данные</h1>
+            </header>
+            <div class="address_hidden <% if @user.first_name && @user.second_name && @user.tel && @address.city && @address.post_index %> hidden <% end %>">
+              <fieldset class="form-part">
+                <legend class="heading">ЛИЧНЫЕ СВЕДЕНИЯ</legend>
+                <div class="two modules">
+                  <div>
+                    <div class="inputwrapper required">
+                      <label class="label" for="checkout.firstName">Имя</label>
+                      <div class="input-field-info">
+                        <span class="input-field-info-description hidden">Это поле необходимо заполнить кирилицей</span>
+                      </div>
+                      <input type="text" name="firstName" class="text-input field firstName" value="<%= @user.first_name %>">
+                      <div class="input-info"></div>
+                      <span class="static"></span>
+                    </div>
+
+                    <div class="inputwrapper required">
+                      <label class="label" for="checkout.lastName">Фамилия</label>
+                      <div class="input-field-info">
+                        <span class="input-field-info-description hidden">Это поле необходимо заполнить кирилицей</span>
+                      </div>
+                      <input type="text" name="lastName" class="text-input field lastName" value="<%= @user.second_name %>">
+                      <div class="input-info"></div>
+                      <span class="static"></span>
+                    </div>
+
+                    <div class="inputwrapper select-date  optional" ng-class="false ? 'required' : 'optional'">
+                      <label class="label" for="myhm-dob">Дата рождения</label>
+                      <input class="form-control form-control-wh" value="<%= @user.date %>" type="text" name="user-date" id="user_date">
+                      <span class="static"></span>
+                    </div>
+
+                  </div>
+                  <div>
+                    <div class="inputwrapper static-text">
+                      <span class="label">Эл. Почта</span>
+                      <p class="static checkout-email-address ng-binding"><%= @user.email %></p>
+                    </div>
+
+                    <div class="inputwrapper required">
+                      <label class="label" for="checkout.lastName">Номер телефона</label>
+                      <div class="input-field-info">
+                        <span class="input-field-info-description hidden">Это поле необходимо заполнить кирилицей</span>
+                      </div>
+                      <input type="text" name="tel" class="text-input field tel" value="<%= @user.tel %>">
+                      <div class="input-info"></div>
+                      <span class="static"></span>
+                    </div>
+
+                  </div>
+                </div>
+              </fieldset>
+              <%= f.fields_for :address_ref do |h| %>
+                     
+                     
+              <fieldset class="form-part">
+                <legend class="heading">АДРЕС</legend>
+                <div class="two modules">
+                  
+                  
+                  <div>
+                    <div class="inputwrapper required">
+                      <%= h.label  :city , "Город" , class: "label"%>
+                      <span class="static"></span>
+                        <% if @address.city %>
+                        <%= h.select(:city, [[@address.city , @address.city ]], {} ,{ :class => "chosen-select-city"}) %>
+                        <% elsif %>
+                        <%= h.select(:city, [['Ваш адрес' , '' ]], {} ,{ :class => "chosen-select"}) %>
+                        <% end %>
+                        <div class="input-info"">При заполнении указывайте область, район и населенный пункт</div>
+                    </div>
+                  </div>
+                  <div>
+                    <div class="inputwrapper required">
+                      <%= h.label  :post_index , "Отделение Новой почты" , class: "label"%>
+                      <% if @address.post_index %>
+                      <%= h.select(:post_index, [[@address.post_index , @address.post_index ]], {} ,{ :class => "chosen-select-addrr"}) %>
+                      <% elsif %>
+                      <%= h.select(:post_index, [['Отделение Новой Почты' , '' ]], {} ,{ :class => "chosen-select-addrr"}) %>
+                      <% end %>
+                      <div class="input-info">Укажите номер отделения Новой почты</div>
+                      <span class="static"></span>
+                    </div>
+                  </div>
+                </div>
+              </fieldset>
+              <%end%>
+
+              <div class="form-part">
+                <div class="two modules">
+                  <div>
+                    <p>
+                      Указанная Вами информация будет сохранена в Вашей учетной записи и в Вашей адресной книге.
+                    </p>
+                  </div>
+                  <div>
+                    <p>* Звездочками обозначены поля, обязательные для заполнения</p>
+                  </div>
+                </div>
+                <!-- <input type="submit" id="submitBillingAddress" value="ПЕРЕЙТИ К РАЗДЕЛУ &quot;ДОСТАВКА&quot;" data-validation-text="Эту форму не удалось отправить. Пожалуйста, проверьте указанную Вами информацию."> -->
+                <a class="save_new_data">Сохранить</a>
+              </div>
+            </div>
+            <div class="read-only row <% if !@user.first_name || !@user.second_name || !@user.tel || !@address.city || !@address.post_index %> hidden <% end %>">
+              <div class="grid col-4">
+                <div class="box-content">
+                  <h3 class="checkout-header-text">ЛИЧНЫЕ СВЕДЕНИЯ</h3>
+                  <div class="ng-binding" id="main_cust_data">
+                    <%= (@user.first_name||'') + ' ' + (@user.second_name||'')%> 
+                    <br>
+                    <%= @user.email %>
+                    <br>
+                    <%= @user.tel %>
+                  </div>
+                </div>
+              </div>
+              <div class="grid col-4">
+                <div class="box-content">
+                  <h3 class="checkout-header-text">АДРЕС</h3>
+                  <div class="read-only-billing-address">
+                    <span class="ng-binding" id="main_cust_addrr">
+                      <%= @address.city %>
+                      <br>
+                      <%= @address.post_index %>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <button type="button" class="link responsive navigate icon-caret-right edit-toggle"> 
+        Редактирование</button>
+          </section>
+          <section class="box checkout-section checkout-delivery-section responsive">
+            <header class="box-headline checkout-delivery-section-header">
+              <h1 class="heading">ДОСТАВКА</h1>
+            </header>
+              <fieldset class="delivery-preferences">
+                <legend class="sub-sub-heading box-content">ДОСТАВКА ОСУЩЕСТВЛЯЕТСЯ НА ОТДЕЛЕНИЕ НОВОЙ ПОЧТЫ</legend>
+              </fieldset>
+          </section>
+          <style>
+            .not-active {
+               pointer-events: none;
+               cursor: default;
+            }
+
+            .icon-info + .icon-warning {
+              margin-right:33px;
+            }
+
+            input[type=text]+.input-info.invalid.field-validation-message{
+              margin-top:0px;
+            }
+            .save_new_data{
+              background: #000;
+              color: #fff;
+              padding: 8px 20px;
+            }
+            .select2-container--default {
+              max-width: 100%;
+              min-width: 100%;
+            }
+            </style>
+          <section class="box checkout-section checkout-delivery-section responsive">
+            <header class="box-headline checkout-delivery-section-header">
+                <%= semantic_form_for @order, :url => carts_order_create_path(@order) do |f| %>
+                код на скидку: 
+                <%= f.text_field :campaign_code, class: 'form-control' %>
+                <span id="get_a_sale" style="cursor:pointer;"> Применить</span>
+                <div class="success_promo" style="display:none;  font-size: 12px; text-transform: none; font-weight: normal; margin-top: 10px; color: green">Скидка учтена в стоимости заказа</div>
+                <div class="success_promo_err" style="display:none;  font-size: 12px; text-transform: none; font-weight: normal; margin-top: 10px; color: red;">Код неверный или срок действия скидки окончен</div>
+            </header>
+          </section>
+          <section class="box checkout-section checkout-payment-section responsive">
+            <header class="box-headline checkout-payment-section-header">
+              <h1 class="heading">Способ оплаты</h1>
+            </header>
+            <div class="row">
+              <div class="grid col-4">
+                <div class="form-part">
+                Выберите способ оплаты
+                </br>
+                <div class="select-primary product-detail-list-item-quantity">
+                  <%= select("money","money" , @payment, {} ) %>
+                  <%= f.hidden_field :json, class: 'form-control' %>
+                <!-- <select name="" id="">
+                  <option value="liqpay">Оплата через liqpay</option>
+                  <option value="privat24">Оплата через терминал ПриватБанка или Приват24</option>
+                </select> -->
+                </div>
+
+
+                </div>
+              </div>
+            </div>
+          </section>
+          <%= f.submit 'ЗАВЕРШИТЬ ПОКУПКУ', class: 'hidden buy_endd'%>
+          <a href="javascript:void(0)" class="button-big place-order-button" style=" color: #fff; background: #000; width: 100%; display: block; text-align: center; padding: 10px 0px">ЗАВЕРШИТЬ ПОКУПКУ</a>
+          <% end %>
+        </div>
+        
+        <div class="grid col-4 diver-width-100">
+          <div class="box checkout-order">
+            <h2 class="box-headline">ВАШ ЗАКАЗ</h2>
+            <ul class="checkout-order-items">
+
+            </ul>
+            <div class="box-content">
+              <table class="order-total">
+                <tfoot>
+                  <tr class="total">
+                    <th scope="row">СТОИМОСТЬ ЗАКАЗА:</th>
+                    <td id="total_price_of_basket">0 Грн</td>
+                  </tr>
+                  <% if @user %>
+                    <% if @user.money != 0 %>
+                    <tr>
+                      <th scope="row">ТЕКУЩИЙ БАЛАНС</th>
+                      <td>
+                        <span><%=@user.money %> Грн</span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th scope="row">ИТОГОВАЯ СТОИМОСТЬ</th>
+                      <td>
+                        <span id="itog_price">0 Грн</span>
+                      </td>
+                    </tr>
+                    <% end %>
+                  <% end %>
+                </tfoot>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <% end %>
+  </div>
+</main>
+<% content_for :javascript do %>
+<script>
+    // input mask
+    $("input.tel").mask("+38 (999) 999-99-99");
+    $("#user_date").mask("9999/99/99",{placeholder:"yyyy/mm/dd"});
+    // input mask
+  $(document).ready(function(){
+    $('.edit-toggle').click(function(){
+      $('.address_hidden, .read-only').toggle();
+    });
+    // novapost_request
+    $('#order_address_ref_attributes_city').select2();
+    $('#order_address_ref_attributes_post_index').select2({
+      minimumResultsForSearch: Infinity
+    });
+      function selectAddrr(){
+        $('#order_address_ref_attributes_post_index option').remove();
+          var c_ref = $('#order_address_ref_attributes_city option').filter(':selected').attr('data-city-ref');
+          var nova_addrr = {
+            "modelName": "AddressGeneral",
+            "calledMethod": "getWarehouses",
+            "methodProperties": {
+                 "CityRef": c_ref
+            },
+            "apiKey": "993750c8658bf925309d3c781906709e"
+          }
+        nova_addrr = JSON.stringify(nova_addrr);
+        $.ajax('https://api.novaposhta.ua/v2.0/json/', {type: 'POST', data: nova_addrr,  success: function(addrrReq){
+          console.log(addrrReq);
+           $.each(addrrReq.data, function(index){
+            $('#order_address_ref_attributes_post_index').append('<option>' + this['Description'] + '</option>');
+          })
+        }});
+      }
+      $("body").on('keyup', '.select2-search__field', function(){
+        $('.select2-container--default').addClass('mylass');
+        var letterVal = $(this).val();
+        var nova = {
+          "modelName": "Address",
+          "calledMethod": "searchSettlements",
+          "methodProperties": {
+              "CityName": $(this).val()
+          },
+          "apiKey": "993750c8658bf925309d3c781906709e"
+        }
+        nova = JSON.stringify(nova);
+        $.ajax('https://api.novaposhta.ua/v2.0/json/', {type: 'POST', data: nova,  success: function(req){
+          $('#order_address_ref_attributes_city option').remove();
+          $.each(req.data[0].Addresses, function(index){
+            $('#order_address_ref_attributes_city').append('<option data-city-ref="' + this['DeliveryCity'] + '">' + this['MainDescription'] + ' ' + this['Region'] + ' район ' + this['Area'] + ' область' + '</option>');
+          });
+          selectAddrr();
+         }
+       }
+        );
+      });
+      $('#order_address_ref_attributes_city').on('change', function() {
+        selectAddrr();
+      });
+    // end
+    cartsItems = JSON.parse(localStorage.getItem('myCart'));
+    $('#order_json').val(JSON.stringify(cartsItems));
+    if(cartsItems){
+      var all_price = 0;
+      $.each(cartsItems, function(){ 
+        if(this.promotional_price){
+        price = '<div class="product-item-price product-item-price-discount"><span class="ng-scope"><span class="main_price ng-binding">' + this.promotional_price + ' Грн</span><small class="ng-binding">' + this.price + ' Грн</small></span></div>';
+          all_price += this.promotional_price * this.count;
+        }
+        else{
+          price = '<div class="product-item-price"><span>' + this.price + ' Грн</span></div>';
+          all_price += this.price * this.count;
+        }
+        $('.checkout-order-items').append('\
+          <li class="checkout-order-item">\
+              <img class="checkout-order-item-image" src="' + this.src + '">\
+              <div class="checkout-order-item-product-info">\
+                <div class="product-item-headline">' + this.name + '</div>\
+                  ' + price + '\
+                <dl class="checkout-order-item-product-details">\
+                  <dt>Количество:</dt>\
+                  <dd>' + this.count + '</dd>\
+                  <dt>Цвет:</dt>\
+                  <dd>' + this.color + '</dd>\
+                  <dt>Размер:</dt>\
+                  <dd>' + this.size + '</dd>\
+                </dl>\
+                <div class="shopping-bag-item-total-price product-item-price">\
+                  Итого: ' + all_price +' Грн\
+                </div>\
+              </div>\
+            </li>\
+          ')
+      });
+      $('#total_price_of_basket').text(all_price + ' Грн');
+      <% if @user %>
+        <% if @user.money %>
+          all_price = all_price - <%= @user.money %>;
+        <% end %>
+      <% end %>
+      $('#itog_price').text(all_price + ' Грн');
+    }
+    // console.log(user);
+
+    $('.save_new_data').click(function(){
+      var user = {authenticity_token:'<%= form_authenticity_token %>', first_name:'' + $("input[name='firstName']").val() + '', second_name:'' + $("input[name='lastName']").val() + '', date:'' + $("input[name='user-date']").val() + '', tel:'' + $("input[name='tel']").val() + '', address_id:'<%= @address.id %>', address_city:'' + $("#select2-order_address_ref_attributes_city-container").text() + '',address_post_index:'' + $("#select2-order_address_ref_attributes_post_index-container").text() + '', _method:'PATCH'};
+      $.ajax('/small_user_update', { type: 'POST', data: user, success:function(resp){
+        // console.log(resp);
+        alert('Данные сохранены!');
+        $('#main_cust_data').html(user.first_name + ' ' + user.second_name + '<br><%= @user.email %>' + '<br>' + user.tel);
+        $('#main_cust_addrr').html(user.address_city + '<br>' + user.address_post_index);
+      }});
+    });
+    $('.place-order-button').click(function(){
+      if($('.firstName').val() == '' || $('.lastName').val() == '' || $('.field.tel').val() == '' || $('#order_address_ref_attributes_city').find('option:selected').val() == '' || $('#order_address_ref_attributes_post_index').find('option:selected').val() == ''){
+        alert('Для оформления заказа необходимо заполнить данные');
+        return false;
+      }
+      else{
+        var user = {authenticity_token:'<%= form_authenticity_token %>', first_name:'' + $("input[name='firstName']").val() + '', second_name:'' + $("input[name='lastName']").val() + '', date:'' + $("input[name='user-date']").val() + '', tel:'' + $("input[name='tel']").val() + '', address_id:'<%= @address.id %>', address_city:'' + $("#select2-order_address_ref_attributes_city-container").text() + '',address_post_index:'' + $("#select2-order_address_ref_attributes_post_index-container").text() + '', _method:'PATCH'};
+        $.ajax('/small_user_update', { type: 'POST', data: user, success:function(resp){
+          // console.log(resp);
+          alert('Данные сохранены!');
+          $('.buy_endd').trigger('click');
+          $('#main_cust_data').html(user.first_name + ' ' + user.second_name + '<br><%= @user.email %>' + '<br>' + user.tel);
+          $('#main_cust_addrr').html(user.address_city + '<br>' + user.address_post_index);
+        }});
+      }
+    });
+    $('#checkoutAddressPartEdit').click(function(){
+      $(this).parent().find('.address_hidden, .read-only').toggle();
+    });
+    // get a code
+    $('#get_a_sale').click(function(){
+      var c_d = $('#order_campaign_code').val();
+      $.get("/get_code?campaign_code=" + c_d, function(data) {
+        // console.log(data);
+        if(data.message == "Success!"){
+          // console.log('success');
+          $('.success_promo').show();
+          $('.success_promo_err').hide();
+          $('#get_a_sale').unbind();
+          all_price = parseInt($('#total_price_of_basket').text());
+          <% if @user %>
+            <% if @user.money != 0 %>
+              $('.order-total tfoot').append('<tr><th scope="row">Cкидка ' + data.value + '%</th><td><span>' + ((all_price * (100-data.value))/100 - <%=@user.money %>) + ' Грн</span></td></tr>');
+              <% elsif %>
+              $('.order-total tfoot').append('<tr><th scope="row">Cкидка ' + data.value + '%</th><td><span>' + (all_price * (100-data.value))/100 + ' Грн</span></td></tr>');
+            <% end %>
+          <% end %>
+        }
+        else{
+          $('.success_promo_err').show();
+        }
+      });
+    });
+    // end
+  });
+</script>
+<% end %>

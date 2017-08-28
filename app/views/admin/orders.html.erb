@@ -1,0 +1,149 @@
+
+
+<div class="wrapper wrapper-content animated fadeInRight">
+<div class="row">
+<div class="col-lg-12">
+<div class="ibox float-e-margins">
+<div class="ibox-title">
+    <h5>Все заказы</h5>
+    <div class="ibox-tools">
+        <a class="collapse-link">
+            <i class="fa fa-chevron-up"></i>
+        </a>
+    </div>
+</div>
+<div class="ibox-content">
+<table class="footable table table-stripped" data-stop-propagation="true" data-page-size="30" data-filter=#filter>
+<thead>
+<tr>
+    <th data-toggle="true">id</th>
+    <th data-toggle="true">Адресс</th>
+    <th data-toggle="true">Клиент</th>
+    <th data-toggle="true">Сумма<br>ГРН</th>
+    <th data-toggle="true">Сумма<br>Злот</th>
+    <th data-toggle="true">Сумма возврат</th>
+    <th data-toggle="true">Скидка</th>
+    <th data-toggle="true">Статус</th>
+    <th data-toggle="true">Дата заказа</th>
+    <th data-hide="all">Коментарий</th>
+    <th data-toggle="true">Обновить</th>
+    <th data-toggle="true">Удалить</th>
+    <th data-hide="all"> Способ оплаты</th>
+    <th data-hide="all"> Заказ</th>
+
+
+</tr>
+</thead>
+<tbody>
+<% @orders.each do | order | %>
+<%if order.bool_factor%>
+<tr class="gradeX" style="background: #FFCDD2">
+<%else%>
+<tr class="gradeX" >
+<%end%>
+    <td><%= order.id %></td>
+    <td><%= order.address %></td>
+    <td>
+    	<p><a href="mailto:<%= order.user.email %>"><%= order.user.email %></a><br>
+    	<%= order.user.first_name%> <%=order.user.second_name%><br>
+    	<a href="tel:<%= order.user.tel %>"><%= order.user.tel %></a></p>
+    </td>
+    <td><%= order.sum %></td>
+    <td><%= order.polka_sum%></td>
+    <td><%= order.cash_back %></td>
+    <td>
+    <% if order.campaign_id!=nil%>
+    	<%if Campaign.find(order.campaign_id) %>
+    		<%= Campaign.find(order.campaign_id).value %> %
+    	<%else%>
+    		была удалена
+    	<%end%>
+    <%else%>
+    	-
+    <%end%>
+    </td>
+    <td><%= order.status %></td>
+    <td><%= order.created_at.getlocal.to_s(:db) %></td>
+    <td><%= order.about %></td>
+    <td><%= link_to 'Обновить', admin_order_edit_path(order) , :target => "_blank"%></td>
+    <td class="center"><%= link_to 'Удалить', admin_order_destroy_path(order) , :method => 'delete', data: { confirm: 'Точно?' } %></td>
+    <td>
+        <%if order.cash_method.nil? %>
+            Не был определён
+        <%elsif order.cash_method %>
+            LiyPay
+        <%else%>
+            Банковской Картой
+        <%end%>
+    </td>
+    <td>
+        <% if order.orders_product_data %>
+                <div class="col-sm-12 container-fluid">
+                    <% order.orders_product_data.each do |opd| %>
+                        <div class="col-sm-6">
+                            <div class="well">
+                                <%if opd.product_datum %>
+                                    <a href="http://www2.hm.com/pl_pl/productpage.<%=opd.product_datum.article%>.html"  target="_blank" ><%=opd.product_datum.product.name%></a>
+                                    <hr>
+                                    <p>№ арт.: <%=opd.product_datum.article%></p>
+                                    <p>Цвет: <%=opd.product_datum.color.name%></p>
+                                    <p>Размер: <%=opd.product_size.size%></p> 
+                                    <p>Цена: <%=opd.product_datum.price%> Злот / <%=opd.product_datum.get_price%> Грн</p>
+                                    <%if opd.product_datum.promotional_price %>
+                                        <p>Цена по скидке от HM: <%=opd.product_datum.promotional_price%> Злот / <%=opd.product_datum.get_promotional_price%> Грн</p>
+                                    <%end%>
+                                    
+                                        <% if order.campaign_id!=nil%>
+                                            <%if Campaign.find(order.campaign_id) %>
+                                                <p>Цена по скидке от нас:
+                                                    <%if opd.product_datum.promotional_price %>  
+                                                        <%= (1-Campaign.find(order.campaign_id).value/100) *  opd.product_datum.promotional_price %> Злот /
+                                                        <%= (1-Campaign.find(order.campaign_id).value/100) *  opd.product_datum.get_promotional_price %> Грн
+                                                    <%else%>
+                                                        <%= (1-Campaign.find(order.campaign_id).value/100) *  opd.product_datum._price %> Злот /
+                                                        <%= (1-Campaign.find(order.campaign_id).value/100) *  opd.product_datum.get__price %> Грн
+                                                    <%end%>
+                                                </p> 
+                                            <%else%>
+                                                <p>акция была удалена</p>
+                                            <%end%>
+                                        <%end%>
+                                   
+                                    <p>Количество: <%=opd.count%></p>
+                                    <hr>
+                                    <p><b>Итого: </b><%= (opd.product_datum.price*opd.count).round(2)%> Злот / <%= (opd.product_datum.get_price*opd.count).round(2)%> Грн</p>
+                                <% end %>
+                            </div>
+                        </div>
+                    <% end %>
+                    <div class="col-sm-6"><div class="container-fluid"><br></div></div>
+                </div>
+        <% end %>
+    </td>
+
+</tr>
+
+<% end %>
+</tbody>
+<tfoot>
+<tr>
+    <th>id</th>
+    <th>Адресс</th>
+    <th>Клиент</th>
+    <th>Сумма<br>ГРН</th>
+    <th>Сумма<br>Злот</th>
+    <th>Сумма возврат</th>
+    <th>Статус</th>
+    <th>Дата заказа</th>
+    <th>Обновить</th>
+    <th>Удалить</th>
+
+</tr>
+</tfoot>
+</table>
+</div>
+</div>
+</div>
+</div>
+
+</div>
